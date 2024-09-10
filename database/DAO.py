@@ -33,19 +33,19 @@ having sum(a.Goals)/count(*) > %s"""
         result = []
 
         cursor = conn.cursor(dictionary=True)
-        query = """select a.PlayerID as id1, a2.PlayerID as id2,(sum(a.TimePlayed) - sum(a2.TimePlayed)) as peso 
+        query = """select a.PlayerID as id1, a2.PlayerID as id2,sum(a.TimePlayed) as tempo1, sum(a2.TimePlayed) as tempo2 
 from premierleague.actions a , premierleague.actions a2  
-where a.PlayerID > a2.PlayerID 
+where a.PlayerID > a2.PlayerID  
+and a2.TeamID <> a.TeamID
 and a2.Starts = 1 
 and a.Starts = 1 
 and a.MatchID = a2.MatchID 
-group by a.PlayerID,a2.PlayerID
-having (sum(a.TimePlayed) > sum(a2.TimePlayed))"""
+group by a.PlayerID,a2.PlayerID"""
 
         cursor.execute(query,)
 
         for row in cursor:
-            result.append([row["id1"],row["id2"],row["peso"]])
+            result.append([row["id1"],row["id2"],row["tempo1"],row["tempo2"]])
 
         cursor.close()
         conn.close()

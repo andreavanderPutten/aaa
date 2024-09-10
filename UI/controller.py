@@ -18,6 +18,8 @@ class Controller:
             return
         self._model.creaGrafo(float(goal_fatti))
         self._view.txtOut.controls.append(ft.Text(f"Numero di nodi : {self._model.grafoDetails()[0]},Numero di archi : {self._model.grafoDetails()[1]}"))
+        top_player,lista = self._model.top_player()
+        self._view.txtOut.controls.append()
         self._view.update_page()
     def handle_details(self, e):
         pass
